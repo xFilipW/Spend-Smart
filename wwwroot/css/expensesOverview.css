@@ -49,36 +49,35 @@
     border-collapse: separate;
     border-spacing: 0;
     background: white;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
     min-width: 1100px;
 }
+
+    .table th, .table td {
+        padding: 14px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+        vertical-align: middle;
+        word-wrap: break-word;
+        white-space: nowrap;
+    }
 
     .table thead th {
         background: linear-gradient(135deg, #505690, #23226B);
         color: white;
         font-weight: bold;
         text-align: center;
-        padding: 14px;
-        white-space: nowrap;
-        font-size: 1rem;
-    }
-
-    .table th, .table td {
         padding: 12px;
+    }
+
+    .table tbody tr td[colspan] {
         text-align: center;
-        border-bottom: 1px solid #ddd;
-        white-space: nowrap;
-        font-size: 1rem;
+        font-weight: bold;
+        padding: 20px;
+        background-color: #f0f0f0;
+        width: 100%;
     }
-
-    .table td {
-        vertical-align: middle !important;
-    }
-
-        .table td .btn {
-           margin: 0 2px;
-        }
 
     .table tbody tr:hover {
         background-color: #f0f0f0;

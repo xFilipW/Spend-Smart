@@ -67,7 +67,6 @@
         font-weight: bold;
         text-align: center;
         padding: 12px;
-        position: relative;
     }
 
     .table tbody tr td[colspan] {
