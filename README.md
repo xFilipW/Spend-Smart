@@ -40,4 +40,4 @@ Spend Smart is a C# .NET MVC web application designed to help users take full co
 Feel free to fork the repository and submit pull requests!
 
 ## License
-This project is licensed under the MIT License.
+This project is licensed under the Apache License Version 2.0.
