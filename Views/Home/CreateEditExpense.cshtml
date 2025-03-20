@@ -1,0 +1,143 @@
+﻿@{
+    ViewData["Title"] = "Create/Edit";
+    var displayStyle = !string.IsNullOrEmpty(Model.AttachmentFileName) ? "block" : "none";
+}
+
+@model SpendSmart.Models.Expense
+
+<div class="container mt-5">
+    <div class="card shadow-lg">
+        <div class="card-header text-white text-center">
+            <h2 class="mb-0">Create or edit an expense</h2>
+        </div>
+        <div class="card-body">
+            <form asp-action="CreateEditExpenseForm" asp-controller="Home" method="post" enctype="multipart/form-data" novalidate>
+                <input type="hidden" asp-for="Id" />
+
+                <div class="mb-3">
+                    <label class="form-label">Value</label>
+                    <div class="input-group">
+                        <span class="input-group-text">💲</span>
+                        <input class="form-control"
+                               type="number" asp-for="Value" id="numberInput"
+                               placeholder="Enter value" required />
+                    </div>
+                    <span asp-validation-for="Value" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Currency</label>
+                    <div class="input-group">
+                        <span class="input-group-text">💰</span>
+                        <input class="form-control"
+                               type="text" asp-for="Currency"
+                               placeholder="Enter currency (e.g., USD, EUR)" required />
+                    </div>
+                    <span asp-validation-for="Currency" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <div class="input-group">
+                        <span class="input-group-text">📝</span>
+                        <input class="form-control"
+                               type="text" asp-for="Description"
+                               placeholder="Add a description" required />
+                    </div>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Category</label>
+                    <div class="input-group">
+                        <span class="input-group-text">📂</span>
+                        <select class="form-select" asp-for="Category" required id="categorySelect">
+                            <option value="" selected>Select category</option>
+                            @foreach (var category in SpendSmart.Models.Expense.Categories)
+                            {
+                                <option value="@category">@category</option>
+                            }
+                        </select>
+                    </div>
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Payment method</label>
+                    <div class="input-group">
+                        <span class="input-group-text">💶</span>
+                        <input class="form-control"
+                               type="text" asp-for="PaymentMethod"
+                               placeholder="Enter payment method" required />
+                    </div>
+                    <span asp-validation-for="PaymentMethod" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Status</label>
+                    <select class="form-select" asp-for="Status" required id="statusSelect">
+                        <option value="" selected>Select status</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Planned">Planned</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Payment due date</label>
+                    <input class="form-control" type="date" asp-for="PaymentDueDate" id="paymentDueDateInput" />
+                    <span asp-validation-for="PaymentDueDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Payment date</label>
+                    <input class="form-control" type="date" asp-for="PaymentDate" id="paymentDateInput" />
+                    <span asp-validation-for="PaymentDate" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Priority</label>
+                    <select class="form-select" asp-for="Priority" required id="prioritySelect">
+                        <option value="" selected>Select priority</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                    <span asp-validation-for="Priority" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Attachment</label>
+                    <div class="input-group input-group-attachment">
+                        <input class="d-none" type="file" name="attachmentFile"
+                               accept="image/*, .pdf, .doc, .docx" id="attachmentInput" />
+                        <button type="button" class="btn btn-select" id="selectFileBtn">Select file</button>
+                        <input class="form-control" type="text" id="fileNameDisplay"
+                               value="@(Model.AttachmentFileName ?? "File not selected")" readonly />
+                        <button type="button" class="btn-clear position-absolute end-0 top-50 translate-middle-y"
+                                id="removeFileBtn" onclick="removeFile()"
+                                style="display: @(string.IsNullOrEmpty(Model.AttachmentFileName) ? "none" : "block");">
+                            ❌
+                        </button>
+                    </div>
+
+                    <input type="hidden" name="ExistingAttachmentFileName" id="existingFileName" value="@Model.AttachmentFileName">
+                    <input type="hidden" name="RemoveAttachment" id="removeAttachment" value="false">
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-submit w-100 mt-2">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/createEditExpense.js" asp-append-version="true"></script>
+}
+
+<link rel="stylesheet" href="~/css/createEditExpense.css" asp-append-version="true" />

@@ -1,0 +1,72 @@
+﻿.account-container {
+    background-image: url('../images/coolbackground.svg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: repeat-y;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem 0;
+}
+
+.brand-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.account-box {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    max-width: 500px;
+    width: 100%;
+}
+
+.btn {
+    background-color: #505690;
+    color: white;
+    border: 1px solid #505690;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 5px 10px;
+    outline: none;
+}
+
+    .btn:focus {
+        outline: none;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:hover {
+        background-color: #23226B;
+        border-color: #23226B;
+        color: white;
+    }
+
+.brand-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+    .brand-title h1 {
+        color: white;
+    }
+
+.a-btn {
+    color: #505690;
+    transition: color 0.2s ease-in-out;
+}
+
+    .a-btn:hover {
+        color: #23226B;
+    }

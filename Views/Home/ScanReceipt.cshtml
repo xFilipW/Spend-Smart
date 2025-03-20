@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "OCR Scan Receipt";
+}
+
+@model SpendSmart.Models.Expense
+
+<div class="container mt-5">
+    <h2 class="text-center">Scan your receipt</h2>
+    <p class="text-center text-muted">Scan the receipt and create an expense based on it.</p>
+
+    <div class="mb-3">
+        <label class="form-label">Select an attachment</label>
+        <div class="input-group input-group-attachment">
+            <input class="d-none" type="file" name="attachmentFile"
+                   accept="image/*, .pdf, .doc, .docx" id="attachmentInput" />
+            <button type="button" class="btn" id="fileBtn">Select file</button>
+            <input class="form-control" type="text" id="fileNameDisplay"
+                   value="File not selected" readonly />
+            <button type="button" class="btn-clear position-absolute end-0 top-50 translate-middle-y"
+                    id="removeFileBtn">
+                ❌
+            </button>
+        </div>
+    </div>
+
+    <div class="text-center mt-3">
+        <button id="scanButton" class="btn">Start OCR</button>
+    </div>
+
+    <div class="result-section mt-4">
+        <h4>Extracted Text:</h4>
+        <textarea id="ocrResult" class="form-control" rows="5" readonly></textarea>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="~/js/scanReceipt.js" asp-append-version="true"></script>
+}
+
+<link rel="stylesheet" href="~/css/scanReceipt.css" asp-append-version="true" />

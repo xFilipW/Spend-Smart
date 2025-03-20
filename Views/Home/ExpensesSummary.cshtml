@@ -1,0 +1,83 @@
+﻿@{
+    ViewData["Title"] = "Expenses summary";
+}
+
+@model List<SpendSmart.Models.Expense>
+
+<div class="container mt-5">
+    <h2 class="text-center">Expenses summary</h2>
+    <p class="text-center text-muted">Check your expenses breakdown in different chart formats.</p>
+
+    @if (Model.Any())
+    {
+        <div class="text-center mb-3">
+            <label for="chartType">Select Chart Type:</label>
+            <select id="chartType" class="form-select w-auto d-inline-block">
+                <option value="pie">Pie Chart</option>
+                <option value="bar">Bar Chart</option>
+                <option value="line">Line Chart</option>
+                <option value="doughnut">Doughnut Chart</option>
+            </select>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="expenseChart"></canvas>
+        </div>
+
+        <h3 class="mt-4">Expense List</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Value</th>
+                    <th>Currency</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Payment Due Date</th>
+                    <th>Payment Date</th>
+                    <th>Priority</th>
+                    <th>Payment Method</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var expense in Model)
+                {
+                    <tr>
+                        <td>@expense.Value</td>
+                        <td>@expense.Currency</td>
+                        <td>@expense.Description</td>
+                        <td>@expense.Category</td>
+                        <td>
+                            <span class="badge @(expense.Status == "Completed" ? "badge-success" : "badge-warning")">
+                                @expense.Status
+                            </span>
+                        </td>
+                        <td>@(expense.PaymentDueDate?.ToString("yyyy-MM-dd") ?? "Paid")</td>
+                        <td>@(expense.PaymentDate?.ToString("yyyy-MM-dd") ?? "Not paid")</td>
+                        <td>
+                            <span class="badge @(expense.Priority == "High" ? "badge-danger" : expense.Priority == "Medium" ? "badge-warning" : "badge-success")">
+                                @expense.Priority
+                            </span>
+                        </td>
+                        <td>@expense.PaymentMethod</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert text-center mt-4">
+            No expenses recorded yet.
+        </div>
+    }
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="~/js/expensesSummary.js"></script>
+    <link rel="stylesheet" href="~/css/expensesSummary.css" />
+}

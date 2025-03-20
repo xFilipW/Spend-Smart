@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SpendSmart</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Left Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <h3>SpendSmart</h3>
+            </div>
+            <ul class="list-unstyled components">
+                <li>
+                    <a href="/Home/ExpensesOverview" class="nav-link">
+                        <img src="~/images/overview.png" alt="Overview" style="width: 24px; height: 24px; margin-right: 8px;">
+                        Overview
+                    </a>
+                </li>
+                <li>
+                    <a href="/Home/CreateEditExpense" class="nav-link">
+                        <img src="~/images/createEdit.png" alt="Create or edit" style="width: 24px; height: 24px; margin-right: 8px;">
+                        Create or edit
+                    </a>
+                </li>
+                <li>
+                    <a href="/Home/GenerateFile" class="nav-link">
+                        <img src="~/images/generateFile.png" alt="Generate File" style="width: 24px; height: 24px; margin-right: 8px;">
+                        Generate file
+                    </a>
+                </li>
+                <li>
+                    <a href="/Home/ExpensesSummary" class="nav-link">
+                        <img src="~/images/expensesSummary.png" alt="Generate File" style="width: 24px; height: 24px; margin-right: 8px;">
+                        Summary
+                    </a>
+                </li>
+                <li>
+                    <a href="/Home/ScanReceipt" class="nav-link">
+                        <img src="~/images/scanReceipt.png" alt="Scan Receipt" style="width: 24px; height: 24px; margin-right: 8px;">
+                        OCR scan receipt
+                    </a>
+                </li>
+            </ul>
+
+            <div class="sidebar-footer">
+                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                    <button type="submit" class="btn btn-logout w-100 mt-2">Logout</button>
+                </form>
+            </div>
+        </nav>
+
+        <!-- Page Content -->
+        <div class="content">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/sidebar.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,110 @@
+﻿@model List<SpendSmart.Models.Expense>
+
+@{
+    ViewData["Title"] = "Generate file";
+}
+
+<div class="expenses-container">
+    <h2 class="title">Generate a file of your expenses</h2>
+
+    <div style="margin-bottom: 10px;">
+        <button type="button" id="selectAllBtn" class="btn">Select all</button>
+    </div>
+
+    <form id="fileForm" method="post" action="@Url.Action("GenerateFile", "Home")">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Choose</th>
+                        <th>Value</th>
+                        <th>Currency</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Payment due date</th>
+                        <th>Payment date</th>
+                        <th>Priority</th>
+                        <th>Payment method</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        @foreach (var expense in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <input type="checkbox" name="selectedExpenses" value="@expense.Id" />
+                                </td>
+                                <td>@expense.Value</td>
+                                <td>@expense.Currency</td>
+                                <td>@expense.Description</td>
+                                <td>@expense.Category</td>
+                                <td>
+                                    <span class="badge @(expense.Status == "Completed" ? "badge-success" :
+                                                        expense.Status == "Delayed" ? "badge-danger" : "badge-warning")">
+                                        @expense.Status
+                                    </span>
+                                </td>
+                                <td>@(expense.PaymentDueDate?.ToString("yyyy-MM-dd") ?? "Paid")</td>
+                                <td>@(expense.PaymentDate?.ToString("yyyy-MM-dd") ?? "Not paid")</td>
+                                <td>
+                                    <span class="badge @(expense.Priority == "High" ? "badge-danger" :
+                                        expense.Priority == "Medium" ? "badge-warning" : "badge-success")">
+                                        @expense.Priority
+                                    </span>
+                                </td>
+                                <td>@expense.PaymentMethod</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="10" class="text-center">No expenses to display.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="form-group">
+            <label for="fileName" class="form-label">File name:</label>
+            <input type="text" id="fileName" name="fileName" class="form-control" placeholder="Enter file name">
+        </div>
+
+        <div class="form-group">
+            <label for="fileType" class="form-label">File type:</label>
+            <select id="fileType" name="fileType" class="form-select">
+                <option value="" selected disabled hidden>Select file</option>
+                <option value="pdf">PDF file</option>
+                <option value="xls">XLS file (Excel)</option>
+            </select>
+        </div>
+
+        <div style="text-align: center; margin-top: 20px;">
+            <button type="submit" id="generateFileBtn" class="btn">Generate file</button>
+        </div>
+    </form>
+</div>
+
+<div id="errorModal" class="modal-overlay" style="display: none;">
+    <div class="modal">
+        <h2 id="errorTitle"></h2>
+        <p id="errorMessage"></p>
+        <input type="hidden" id="expenseIdToDelete">
+        <div class="modal-actions">
+            <button class="btn" id="closeErrorModal">Ok</button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<link rel="stylesheet" href="~/css/generateFile.css" asp-append-version="true" />
+<script src="~/js/generateFile.js" asp-append-version="true"></script>

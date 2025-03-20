@@ -1,0 +1,107 @@
+﻿@model List<SpendSmart.Models.Expense>
+
+@{
+    ViewData["Title"] = "Expenses overview";
+}
+
+<div class="expenses-container">
+    <h2 class="title">Your expenses</h2>
+
+    <div class="sort-container">
+        <label for="sortOrder">Sort by:</label>
+        <select id="sortOrder" class="form-select" onchange="sortExpenses()">
+            <option value="id-asc" selected>ID: (Oldest → Newest)</option>
+            <option value="id-desc">ID: (Newest → Oldest)</option>
+            <option value="lowest">Lowest value</option>
+            <option value="highest">Highest value</option>
+            <option value="planned">Status: Planned first</option>
+            <option value="completed">Status: Completed first</option>
+            <option value="priority-high-low">Priority: (High → Low)</option>
+            <option value="priority-low-high">Priority: (Low → High)</option>
+        </select>
+    </div>
+
+    <div class="table-responsive">
+        <table id="expensesTable" class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Value</th>
+                    <th>Currency</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Payment Due Date</th>
+                    <th>Payment Date</th>
+                    <th>Priority</th>
+                    <th>Payment Method</th>
+                    <th>Attachment</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    @foreach (var expense in Model.Select((item, index) => new { item, index }))
+                    {
+                        <tr>
+                            <td>@(expense.index + 1)</td>
+                            <td data-value="@expense.item.Value">@expense.item.Value</td>
+                            <td>@expense.item.Currency</td>
+                            <td>@expense.item.Description</td>
+                            <td>@expense.item.Category</td>
+                            <td>
+                                <span class="badge @(expense.item.Status == "Completed" ? "badge-success" : "badge-warning")">
+                                    @expense.item.Status
+                                </span>
+                            </td>
+                            <td>@(expense.item.PaymentDueDate?.ToString("yyyy-MM-dd") ?? "Paid")</td>
+                            <td>@(expense.item.PaymentDate?.ToString("yyyy-MM-dd") ?? "Not paid")</td>
+                            <td>
+                                <span class="badge @(expense.item.Priority == "High" ? "badge-danger" : expense.item.Priority == "Medium" ? "badge-warning" : "badge-success")">
+                                    @expense.item.Priority
+                                </span>
+                            </td>
+                            <td>@expense.item.PaymentMethod</td>
+                            <td>
+                                @if (expense.item.AttachmentData != null && expense.item.AttachmentData.Length > 0)
+                                {
+                                    <a href="@Url.Action("DownloadFile", "Home", new { id = expense.item.Id })">Show file</a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No file</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-action="CreateEditExpense" class="btn" asp-route-id="@expense.item.Id">Edit</a>
+                                <button type="button" class="btn" onclick="showDeleteModal(@expense.item.Id)">Delete</button>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="12" class="text-center">No expenses found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="deleteModal" class="modal-overlay" style="display: none;">
+    <div class="modal">
+        <h2>Confirm Delete</h2>
+        <p>Are you sure you want to delete this expense?</p>
+        <input type="hidden" id="expenseIdToDelete">
+        <div class="modal-actions">
+            <button class="btn" onclick="closeDeleteModal()">Cancel</button>
+            <button class="btn" onclick="deleteExpense()">Delete</button>
+        </div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="~/css/expensesOverview.css" asp-append-version="true" />
+<script src="~/js/expensesOverview.js" asp-append-version="true"></script>
